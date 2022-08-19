@@ -1,0 +1,22 @@
+networks:
+  amqp-net:
+    driver: bridge
+
+
+services:
+
+  app:
+    build: .
+    command: ["python", "-m", "code_run"]
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    expose:
+      - 15672:15672
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - amqp-net

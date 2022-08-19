@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "code_run"
+version = "0.1.0"
+description = ""
+authors = ["Artem Burenin  <burenotti@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^1.9.2"
+aio-pika = "^8.1.1"
+runbox = "^0.5.2"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.971"
+black = "^22.6.0"
+flake8 = "^5.0.4"
+pre-commit = "^2.20.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 89
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''

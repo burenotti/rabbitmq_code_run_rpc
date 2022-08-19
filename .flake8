@@ -1,0 +1,4 @@
+[flake8]
+max_line_length=89
+indent_size=4
+format=default
