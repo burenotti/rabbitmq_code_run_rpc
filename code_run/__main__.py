@@ -19,7 +19,7 @@ async def main():
         async with conn.channel() as chan:
             executor = DockerExecutor()
             server = await AmqpServer.from_channel(
-                chan, "code_run_queue", "code_run_exchange"
+                chan, settings.code_run_queue, settings.code_run_exchange
             )
             consumer = functools.partial(execute, executor=executor)
             await server.consume(consumer)

@@ -13,6 +13,8 @@ class LangConfig(BaseModel):
 
 
 class Settings(BaseSettings):
+    code_run_exchange: str
+    code_run_queue: str
     amqp: AmqpDsn
     limits: Limits
     languages: dict[str, LangConfig]
