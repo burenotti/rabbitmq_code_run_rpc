@@ -5,8 +5,8 @@ import logging
 import aio_pika
 from runbox import DockerExecutor
 
-from executor import execute
-from settings import settings
+from .executor import execute
+from .settings import settings
 from .server import AmqpServer
 
 

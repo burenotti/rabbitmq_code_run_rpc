@@ -22,7 +22,7 @@ class RunboxClient:
     ) -> None:
         self.routing_key = routing_key
         self.channel = channel
-        self._custom_exchange: AbstractExchange = custom_exchange
+        self._custom_exchange: AbstractExchange | None = custom_exchange
         self._callback_queue: AbstractQueue = callback_queue
         self._consumer_tag: str | None = None
         self._futures: dict[str, asyncio.Future] = {}
@@ -89,11 +89,14 @@ class RunboxClient:
             routing_key=self.routing_key,
         )
 
-        future = asyncio.Future()
+        future = asyncio.Future[RunResult]()
         self._futures[correlation_id] = future
         return await future
 
     async def _process_result(self, message: AbstractIncomingMessage) -> None:
+        if message.correlation_id is None:
+            return
+
         if future := self._futures.get(message.correlation_id):
             try:
                 result = RunResult.from_message(message)

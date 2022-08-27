@@ -87,8 +87,8 @@ class AmqpServer:
                 "AmqpTaskProvider is not initialized await on it or call init() method"
             )
 
+        message: AbstractIncomingMessage
         async for message in self.queue.iterator():
-            message: AbstractIncomingMessage
             try:
                 parsed_message = self.parse_message(message)
                 await message.ack()
@@ -106,10 +106,11 @@ class AmqpServer:
 
     async def send_result_message(self, result: RunResult) -> None:
         body = result.json()
-        await self.channel.default_exchange.publish(
-            Message(
-                body=body.encode(),
-                correlation_id=result.correlation_id,
-            ),
-            routing_key=result.reply_to,
-        )
+        if result.reply_to:
+            await self.channel.default_exchange.publish(
+                Message(
+                    body=body.encode(),
+                    correlation_id=result.correlation_id,
+                ),
+                routing_key=result.reply_to,
+            )
